@@ -1,7 +1,8 @@
+from rest_framework.decorators import permission_classes
 from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated
-from .models import Booking, Menu
-from .serializers import MenuSerializer, BookingSerializer 
+from .models import Booking, Menu,MenuItem
+from .serializers import MenuSerializer, BookingSerializer , MenuItemSerializer
 from django.shortcuts import render
 
 # Create your views here.
@@ -9,8 +10,9 @@ def index(request):
      return render(request, 'index.html', {})
 
 class MenuItemsView(generics.ListCreateAPIView):
-    queryset = Menu.objects.all()
-    serializer_class = MenuSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
 
 
 class SingleMenuItemView(generics.RetrieveUpdateAPIView, generics.DestroyAPIView):
